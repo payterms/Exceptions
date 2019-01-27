@@ -21,7 +21,7 @@ public class MainClass {
             if (!isArrayGood) {
                 throw new MySizeArrayException();
             } else {
-                System.out.println("Array is good");
+                System.out.println("Размер массива верный");
             }
             /*
             2) Далее метод должен пройтись по всем элементам массива, преобразовать в int и просуммировать. Если в каком-то элементе массива преобразование не удалось (например, в ячейке лежит символ или текст вместо числа), должно быть брошено исключение MyArrayDataException с детализацией, в какой именно ячейке лежат неверные данные.
@@ -56,18 +56,28 @@ public class MainClass {
             }
         }
 
-        testArray[2][3] = "MAMA";
 /*
 3) В методе main() вызвать полученный метод, обработать возможные исключения MySizeArrayException и MyArrayDataException и вывести результат расчета.
 */
         try {
             result = arrayMethod(testArray);
-            System.out.println("Sum is " + result);
+            System.out.println("Сумма элементов = " + result);
         } catch (MySizeArrayException еxception) {
-            System.out.println("Size of array is incorrect!");
+            System.out.println("Ошибка размера массива!");
         } catch (MyArrayDataException еxception) {
-            System.out.println(еxception);
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
         }
+
+        testArray[2][3] = "MAMA";// для отладки заполняем строковыми данными
+        try {
+            result = arrayMethod(testArray);
+            System.out.println("Сумма элементов = " + result);
+        } catch (MySizeArrayException еxception) {
+            System.out.println("Ошибка размера массива!");
+        } catch (MyArrayDataException еxception) {
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
+        }
+
     }
 }
 
@@ -75,6 +85,7 @@ class MySizeArrayException extends RuntimeException {
 }
 
 class MyArrayDataException extends RuntimeException {
+    // индексы элемнта, вызвавшего исключение
     int x;
     int y;
 
@@ -83,6 +94,6 @@ class MyArrayDataException extends RuntimeException {
         this.y = y;
     }
     public String toString(){
-        return "Array element [" + this.x +"," + this.y + "] is incorrect";
+        return "Элемент массива [" + this.x +"," + this.y + "] имеет недопустимое значение";
     }
 }
