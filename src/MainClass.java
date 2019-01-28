@@ -108,7 +108,4 @@ class MyArrayDataException extends RuntimeException {
         this.x = x;
         this.y = y;
     }
-   /* public String toString(){
-        return "Элемент массива [" + this.x +"," + this.y + "] имеет недопустимое значение";
-    }*/
 }
