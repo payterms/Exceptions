@@ -3,7 +3,7 @@ public class MainClass {
 
     public static int arrayMethod(String[][] array) throws MySizeArrayException, MyArrayDataException {
         boolean isArrayGood = true;
-        int i=0, j=0, sum = 0;
+        int i = 0, j = 0, sum = 0;
         /*
          * 1) Напишите метод, на вход которого подаётся двумерный строковый массив размером 4х4. При подаче массива другого размера необходимо бросить исключение MyArraySizeException.
          * */
@@ -20,7 +20,7 @@ public class MainClass {
             }
 
             if (!isArrayGood) {
-                throw new MySizeArrayException( "Размеры массива недопустимы для данной задачи.", array.length, array[i].length);
+                throw new MySizeArrayException(array.length, array[i].length);
             } else {
                 System.out.println("Размер массива верный");
             }
@@ -36,7 +36,7 @@ public class MainClass {
                 }
                 return sum;
             } catch (NumberFormatException еxception) {
-                throw new MyArrayDataException("Массив содержит элемент с недопустимым значением.",i,j);
+                throw new MyArrayDataException(i, j);
             }
         } catch (MySizeArrayException еxception) {
             throw еxception;
@@ -97,8 +97,8 @@ class MySizeArrayException extends RuntimeException {
     int x;
     int y;
 
-    public MySizeArrayException(String exceptionMessage, int x, int y) {
-        super(String.format(exceptionMessage + "Размер массива [%d, %d]", x,y));
+    public MySizeArrayException(int x, int y) {
+        super(String.format("Размеры массива недопустимы для данной задачи.Размер массива [%d, %d]", x, y));
         this.x = x;
         this.y = y;
     }
@@ -109,8 +109,8 @@ class MyArrayDataException extends RuntimeException {
     int x;
     int y;
 
-    public MyArrayDataException(String exceptionMessage, int x, int y) {
-        super(String.format(exceptionMessage + "Индекс элемента:[%d, %d]", x,y));
+    public MyArrayDataException(int x, int y) {
+        super(String.format("Массив содержит элемент с недопустимым значением. Индекс элемента:[%d, %d]", x, y));
         this.x = x;
         this.y = y;
     }
