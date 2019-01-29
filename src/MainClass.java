@@ -1,8 +1,9 @@
 public class MainClass {
+    public static final int REQUIRED_LEN = 4;
+
     public static int arrayMethod(String[][] array) throws MySizeArrayException, MyArrayDataException {
-        final int REQUIRED_LEN = 4;
         boolean isArrayGood = true;
-        int i=0, j=0, sum = 0;
+        int i = 0, j = 0, sum = 0;
         /*
          * 1) Напишите метод, на вход которого подаётся двумерный строковый массив размером 4х4. При подаче массива другого размера необходимо бросить исключение MyArraySizeException.
          * */
@@ -19,9 +20,9 @@ public class MainClass {
             }
 
             if (!isArrayGood) {
-                throw new MySizeArrayException();
+                throw new MySizeArrayException(array.length, array[i].length);
             } else {
-                System.out.println("Array is good");
+                System.out.println("Размер массива верный");
             }
             /*
             2) Далее метод должен пройтись по всем элементам массива, преобразовать в int и просуммировать. Если в каком-то элементе массива преобразование не удалось (например, в ячейке лежит символ или текст вместо числа), должно быть брошено исключение MyArrayDataException с детализацией, в какой именно ячейке лежат неверные данные.
@@ -35,7 +36,7 @@ public class MainClass {
                 }
                 return sum;
             } catch (NumberFormatException еxception) {
-                throw new MyArrayDataException(i,j);
+                throw new MyArrayDataException(i, j);
             }
         } catch (MySizeArrayException еxception) {
             throw еxception;
@@ -47,6 +48,7 @@ public class MainClass {
     public static void main(String[] args) {
 
         String[][] testArray = new String[4][4];
+        String[][] testArrayWrongSized = new String[3][4];
         int result = 0;
 
         /* Заполняем массив данными */
@@ -56,33 +58,60 @@ public class MainClass {
             }
         }
 
-        testArray[2][3] = "MAMA";
 /*
 3) В методе main() вызвать полученный метод, обработать возможные исключения MySizeArrayException и MyArrayDataException и вывести результат расчета.
 */
+        /* пытаемся обработать целочисленный массив */
         try {
             result = arrayMethod(testArray);
-            System.out.println("Sum is " + result);
+            System.out.println("Сумма элементов = " + result);
         } catch (MySizeArrayException еxception) {
-            System.out.println("Size of array is incorrect!");
-        } catch (MyArrayDataException еxception) {
             System.out.println(еxception);
+        } catch (MyArrayDataException еxception) {
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
         }
+
+        testArray[2][3] = "MAMA";// для отладки заполняем строковыми данными
+        try {
+            result = arrayMethod(testArray);
+            System.out.println("Сумма элементов = " + result);
+        } catch (MySizeArrayException еxception) {
+            System.out.println(еxception);
+        } catch (MyArrayDataException еxception) {
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
+        }
+
+        try {
+            result = arrayMethod(testArrayWrongSized);
+            System.out.println("Сумма элементов = " + result);
+        } catch (MySizeArrayException еxception) {
+            System.out.println(еxception);
+        } catch (MyArrayDataException еxception) {
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
+        }
+
     }
 }
 
 class MySizeArrayException extends RuntimeException {
+    int x;
+    int y;
+
+    public MySizeArrayException(int x, int y) {
+        super(String.format("Размеры массива недопустимы для данной задачи.Размер массива [%d, %d]", x, y));
+        this.x = x;
+        this.y = y;
+    }
 }
 
 class MyArrayDataException extends RuntimeException {
+    // индексы элемнта, вызвавшего исключение
     int x;
     int y;
 
     public MyArrayDataException(int x, int y) {
+        super(String.format("Массив содержит элемент с недопустимым значением. Индекс элемента:[%d, %d]", x, y));
         this.x = x;
         this.y = y;
-    }
-    public String toString(){
-        return "Array element [" + this.x +"," + this.y + "] is incorrect";
     }
 }
