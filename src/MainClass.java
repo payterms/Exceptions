@@ -20,7 +20,7 @@ public class MainClass {
             }
 
             if (!isArrayGood) {
-                throw new MySizeArrayException(array.length, i);
+                throw new MySizeArrayException( "Размеры массива недопустимы для данной задачи.", array.length, i);
             } else {
                 System.out.println("Размер массива верный");
             }
@@ -36,7 +36,7 @@ public class MainClass {
                 }
                 return sum;
             } catch (NumberFormatException еxception) {
-                throw new MyArrayDataException(i,j);
+                throw new MyArrayDataException("Массив содержит элемент с недопустимым значением.",i,j);
             }
         } catch (MySizeArrayException еxception) {
             throw еxception;
@@ -65,9 +65,9 @@ public class MainClass {
             result = arrayMethod(testArray);
             System.out.println("Сумма элементов = " + result);
         } catch (MySizeArrayException еxception) {
-            System.out.println(еxception.message);
+            System.out.println(еxception);
         } catch (MyArrayDataException еxception) {
-            System.out.println(еxception.message);// отображаем индексы элемента, который вызвал ошибку
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
         }
 
         testArray[2][3] = "MAMA";// для отладки заполняем строковыми данными
@@ -75,9 +75,9 @@ public class MainClass {
             result = arrayMethod(testArray);
             System.out.println("Сумма элементов = " + result);
         } catch (MySizeArrayException еxception) {
-            System.out.println(еxception.message);
+            System.out.println(еxception);
         } catch (MyArrayDataException еxception) {
-            System.out.println(еxception.message);// отображаем индексы элемента, который вызвал ошибку
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
         }
 
     }
@@ -86,13 +86,11 @@ public class MainClass {
 class MySizeArrayException extends RuntimeException {
     int x;
     int y;
-    String message;
 
-    public MySizeArrayException(int x, int y) {
-        super();
+    public MySizeArrayException(String exceptionMessage, int x, int y) {
+        super(String.format(exceptionMessage + "Размер массива", x,y));
         this.x = x;
         this.y = y;
-        this.message = "Размеры массива [" + x +"," + y + "] недопустимы для данной задачи";
     }
 }
 
@@ -100,11 +98,9 @@ class MyArrayDataException extends RuntimeException {
     // индексы элемнта, вызвавшего исключение
     int x;
     int y;
-    String message;
 
-    public MyArrayDataException(int x, int y) {
-        super();
-        this.message = "Элемент массива [" + x +"," + y + "] имеет недопустимое значение";
+    public MyArrayDataException(String exceptionMessage, int x, int y) {
+        super(String.format(exceptionMessage + "Индекс элемента:[%d, %d]", x,y));
         this.x = x;
         this.y = y;
     }
