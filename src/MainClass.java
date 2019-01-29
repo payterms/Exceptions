@@ -20,7 +20,7 @@ public class MainClass {
             }
 
             if (!isArrayGood) {
-                throw new MySizeArrayException( "Размеры массива недопустимы для данной задачи.", array.length, i);
+                throw new MySizeArrayException( "Размеры массива недопустимы для данной задачи.", array.length, array[i].length);
             } else {
                 System.out.println("Размер массива верный");
             }
@@ -48,6 +48,7 @@ public class MainClass {
     public static void main(String[] args) {
 
         String[][] testArray = new String[4][4];
+        String[][] testArrayWrongSized = new String[3][4];
         int result = 0;
 
         /* Заполняем массив данными */
@@ -80,6 +81,15 @@ public class MainClass {
             System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
         }
 
+        try {
+            result = arrayMethod(testArrayWrongSized);
+            System.out.println("Сумма элементов = " + result);
+        } catch (MySizeArrayException еxception) {
+            System.out.println(еxception);
+        } catch (MyArrayDataException еxception) {
+            System.out.println(еxception);// отображаем индексы элемента, который вызвал ошибку
+        }
+
     }
 }
 
@@ -88,7 +98,7 @@ class MySizeArrayException extends RuntimeException {
     int y;
 
     public MySizeArrayException(String exceptionMessage, int x, int y) {
-        super(String.format(exceptionMessage + "Размер массива", x,y));
+        super(String.format(exceptionMessage + "Размер массива [%d, %d]", x,y));
         this.x = x;
         this.y = y;
     }
